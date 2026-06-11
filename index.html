@@ -1,0 +1,359 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>EOW 2 Unit 7-8 Practice</title>
+  <style>
+    :root{--bg:#f6faf8;--ink:#17211f;--muted:#62716c;--line:#d9e5e1;--panel:#fff;--accent:#0f766e;--accent2:#14b8a6;--good:#087443;--bad:#b42318;--soft:#e7f6f3;--warn:#fff7d6}
+    *{box-sizing:border-box}
+    body{margin:0;background:var(--bg);color:var(--ink);font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI","Noto Sans TC",Arial,sans-serif}
+    header{position:sticky;top:0;z-index:10;background:#fff;border-bottom:1px solid var(--line);padding:18px 16px 10px}
+    .wrap{max-width:1080px;margin:0 auto}
+    h1{font-size:clamp(26px,4vw,42px);margin:0 0 6px}
+    h2{font-size:24px;margin:0 0 12px}
+    h3{font-size:18px;margin:0 0 8px}
+    p{line-height:1.6}
+    .sub{color:var(--muted);margin:0;font-size:15px}
+    nav{display:flex;gap:8px;overflow:auto;padding:12px 0 0}
+    button{font-family:inherit}
+    nav button,.btn{border:1px solid var(--line);background:#fff;color:var(--ink);border-radius:8px;padding:9px 12px;font-weight:800;cursor:pointer;white-space:nowrap}
+    nav button.active,.primary{background:var(--accent);border-color:var(--accent);color:#fff}
+    main{padding:20px 16px 48px}
+    .section{display:none}
+    .section.active{display:block}
+    .panel{background:var(--panel);border:1px solid var(--line);border-radius:8px;padding:16px;margin-bottom:12px}
+    .hero{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(280px,.9fr);gap:14px}
+    @media(max-width:780px){.hero{grid-template-columns:1fr}}
+    .big{font-size:44px;font-weight:950;line-height:1.08;margin:12px 0}
+    .muted{color:var(--muted)}
+    .row{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+    .pill{display:inline-flex;align-items:center;background:var(--soft);border:1px solid #b9e8df;color:#075e59;border-radius:999px;padding:5px 10px;font-size:13px;font-weight:900;margin:4px 4px 4px 0}
+    .cover{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
+    .cover div{border:1px solid var(--line);border-radius:8px;background:#fff;padding:12px;text-align:center;font-weight:850}
+    @media(max-width:640px){.cover{grid-template-columns:repeat(2,1fr)}}
+    .word-list{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:8px}
+    .word{display:flex;justify-content:space-between;align-items:center;gap:8px;min-height:60px;border:1px solid var(--line);border-radius:8px;padding:10px;background:#fff}
+    .word strong{display:block}
+    .word span{display:block;color:var(--muted);font-size:13px;margin-top:2px}
+    .speak{border:0;background:var(--soft);color:#075e59;border-radius:8px;padding:8px 10px;font-weight:900;cursor:pointer}
+    .quiz{min-height:360px;display:flex;flex-direction:column;gap:14px}
+    .stat{display:flex;justify-content:space-between;gap:10px;color:var(--muted);font-size:14px;font-weight:800}
+    .progress{height:9px;background:#e8efed;border-radius:999px;overflow:hidden}
+    .bar{height:100%;width:0;background:linear-gradient(90deg,var(--accent),var(--accent2));transition:width .25s ease}
+    .prompt{font-size:23px;line-height:1.35;font-weight:900}
+    .hint{background:var(--warn);border:1px solid #f1dc8a;border-radius:8px;padding:10px 12px;color:#5d4b00}
+    .hint.hidden{display:none}
+    .choices{display:grid;gap:9px}
+    .choice{text-align:left;border:1px solid var(--line);border-radius:8px;background:#fff;padding:12px;font-size:17px;line-height:1.35;cursor:pointer}
+    .choice:hover{border-color:var(--accent)}
+    .choice.correct{background:#e6f8ee;border-color:#7bd7a9;color:#075e3c}
+    .choice.wrong{background:#fff0ee;border-color:#ffb4a9;color:#8a1f14}
+    input.answer{width:100%;border:2px solid var(--line);border-radius:8px;padding:14px;font-size:22px;outline:none}
+    input.answer:focus{border-color:var(--accent)}
+    .feedback{min-height:44px;border-radius:8px;padding:11px 12px;border:1px solid transparent;line-height:1.5}
+    .feedback.good{background:#e6f8ee;border-color:#9ee3bf;color:#075e3c}
+    .feedback.bad{background:#fff0ee;border-color:#ffb4a9;color:#8a1f14}
+    .feedback.neutral{background:#eef6f5;border-color:#cfe5e1;color:#36524d}
+    .bank,.answer-row{min-height:56px;border:1px dashed #b7c9c4;border-radius:8px;padding:9px;display:flex;flex-wrap:wrap;gap:8px;background:#fbfefd}
+    .tile{border:1px solid var(--line);background:#fff;border-radius:8px;padding:9px 11px;cursor:pointer;font-size:16px;font-weight:800}
+    .tile.answer{background:var(--soft);border-color:#a8ddd4}
+    .mini{font-size:13px;color:var(--muted)}
+    .kbd{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;background:#edf4f2;padding:2px 6px;border-radius:6px}
+  </style>
+</head>
+<body>
+  <header>
+    <div class="wrap">
+      <h1>EOW 2 Unit 7-8 Practice</h1>
+      <p class="sub">依照考卷題型設計：A 單字、B 選擇／圈選、C 填空，加上慢速聽讀。Unit 7、Unit 8 的單字、發音與句型都放進題庫。</p>
+      <nav>
+        <button class="active" onclick="showTab('home',this)">首頁</button>
+        <button onclick="showTab('words',this)">單字總複習</button>
+        <button onclick="showTab('vocabQuiz',this)">A 單字填空</button>
+        <button onclick="showTab('listenQuiz',this)">慢速聽力</button>
+        <button onclick="showTab('choiceQuiz',this)">B 選擇／圈選</button>
+        <button onclick="showTab('fillQuiz',this)">C 填空</button>
+        <button onclick="showTab('builderQuiz',this)">句子重組</button>
+      </nav>
+    </div>
+  </header>
+
+  <main class="wrap">
+    <section id="home" class="section active">
+      <div class="hero">
+        <div class="panel">
+          <span class="pill">Unit 7 How Are You?</span>
+          <span class="pill">Unit 8 Awesome Animals</span>
+          <div class="big">考卷題型練習站</div>
+          <p class="muted">每一題都有即時回饋。按「聽」會用較慢速度朗讀，適合二年級學生跟讀。</p>
+          <div class="row">
+            <button class="btn primary" onclick="showTabById('vocabQuiz')">開始 A 單字填空</button>
+            <button class="btn" onclick="speakText('How are you? I am great. Can a penguin swim? Yes, it can.')">試聽慢速念法</button>
+          </div>
+        </div>
+        <div class="panel">
+          <h2>練習範圍</h2>
+          <div class="cover">
+            <div>U7 情緒</div><div>U7 動作</div><div>U8 動物</div><div>U8 特徵</div>
+            <div>複數</div><div>look / looks</div><div>Can / Do</div><div>Does / has</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="words" class="section">
+      <div class="panel">
+        <h2>單字總複習</h2>
+        <p class="muted">按「聽」可以慢速播放。速度預設比較慢，學生可以跟著念。</p>
+        <div class="row">
+          <label>念法速度：
+            <select id="rateSelect">
+              <option value="0.52">很慢</option>
+              <option value="0.62" selected>慢</option>
+              <option value="0.75">普通偏慢</option>
+            </select>
+          </label>
+          <button class="btn" onclick="speakText('angry, bored, hungry, scared, surprised')">聽 Unit 7 前五個</button>
+          <button class="btn" onclick="speakText('a penguin, a giraffe, a hippo, a tiger, a panda')">聽 Unit 8 前五個</button>
+        </div>
+      </div>
+      <div id="wordSections"></div>
+    </section>
+
+    <section id="vocabQuiz" class="section">
+      <div class="panel quiz">
+        <div class="stat"><span id="vocabProgress"></span><span id="vocabScore"></span></div>
+        <div class="progress"><div id="vocabBar" class="bar"></div></div>
+        <span id="vocabUnit" class="pill"></span>
+        <div id="vocabPrompt" class="prompt"></div>
+        <div id="vocabHint" class="hint"></div>
+        <input id="vocabInput" class="answer" autocomplete="off" placeholder="請輸入英文" onkeydown="if(event.key==='Enter')checkVocab()">
+        <div class="row">
+          <button class="btn primary" onclick="checkVocab()">檢查</button>
+          <button class="btn" onclick="speakCurrentVocab()">聽</button>
+          <button class="btn" onclick="nextVocab()">下一題</button>
+          <button class="btn" onclick="resetVocab()">重來</button>
+        </div>
+        <div id="vocabFeedback" class="feedback"></div>
+      </div>
+    </section>
+
+    <section id="listenQuiz" class="section">
+      <div class="panel quiz">
+        <div class="stat"><span id="listenProgress"></span><span id="listenScore"></span></div>
+        <div class="progress"><div id="listenBar" class="bar"></div></div>
+        <span class="pill">慢速聽力</span>
+        <div class="prompt">聽英文，選正確答案。</div>
+        <div class="row">
+          <button class="btn primary" onclick="playListen()">播放</button>
+          <button class="btn" onclick="resetListen()">重來</button>
+        </div>
+        <div id="listenChoices" class="choices"></div>
+        <div id="listenFeedback" class="feedback"></div>
+      </div>
+    </section>
+
+    <section id="choiceQuiz" class="section">
+      <div class="panel quiz">
+        <div class="stat"><span id="choiceProgress"></span><span id="choiceScore"></span></div>
+        <div class="progress"><div id="choiceBar" class="bar"></div></div>
+        <span id="choiceUnit" class="pill"></span>
+        <div id="choicePrompt" class="prompt"></div>
+        <div id="choiceHint" class="hint hidden"></div>
+        <div id="choiceChoices" class="choices"></div>
+        <div class="row">
+          <button class="btn" onclick="showChoiceHint()">提示</button>
+          <button class="btn" onclick="speakCurrentChoice()">聽題目</button>
+          <button class="btn" onclick="resetChoice()">重來</button>
+        </div>
+        <div id="choiceFeedback" class="feedback"></div>
+      </div>
+    </section>
+
+    <section id="fillQuiz" class="section">
+      <div class="panel quiz">
+        <div class="stat"><span id="fillProgress"></span><span id="fillScore"></span></div>
+        <div class="progress"><div id="fillBar" class="bar"></div></div>
+        <span id="fillUnit" class="pill"></span>
+        <div id="fillPrompt" class="prompt"></div>
+        <div id="fillHint" class="hint hidden"></div>
+        <input id="fillInput" class="answer" autocomplete="off" placeholder="請輸入缺少的英文" onkeydown="if(event.key==='Enter')checkFill()">
+        <div class="row">
+          <button class="btn primary" onclick="checkFill()">檢查</button>
+          <button class="btn" onclick="showFillHint()">提示</button>
+          <button class="btn" onclick="speakCurrentFill()">聽完整句</button>
+          <button class="btn" onclick="nextFill()">下一題</button>
+          <button class="btn" onclick="resetFill()">重來</button>
+        </div>
+        <div id="fillFeedback" class="feedback"></div>
+      </div>
+    </section>
+
+    <section id="builderQuiz" class="section">
+      <div class="panel quiz">
+        <div class="stat"><span id="builderProgress"></span><span id="builderScore"></span></div>
+        <div class="progress"><div id="builderBar" class="bar"></div></div>
+        <span id="builderUnit" class="pill"></span>
+        <div id="builderPrompt" class="prompt"></div>
+        <div class="mini">點下面字卡排成句子。點答案區字卡可以拿回去。</div>
+        <div id="answerRow" class="answer-row"></div>
+        <div id="wordBank" class="bank"></div>
+        <div class="row">
+          <button class="btn primary" onclick="checkBuilder()">檢查</button>
+          <button class="btn" onclick="speakCurrentBuilder()">聽完整句</button>
+          <button class="btn" onclick="clearBuilder()">清除</button>
+          <button class="btn" onclick="nextBuilder()">下一題</button>
+          <button class="btn" onclick="resetBuilder()">重來</button>
+        </div>
+        <div id="builderFeedback" class="feedback"></div>
+      </div>
+    </section>
+  </main>
+
+  <script>
+    const u7Vocab=[["angry","生氣","a____"],["bored","無聊","b____"],["hungry","肚子餓","h_____"],["scared","害怕","sc____"],["surprised","驚訝","su_______"],["thirsty","口渴","t______"],["tired","累","t____"],["crying","正在哭","c_____"],["frowning","正在皺眉","f_______"],["laughing","正在笑","l_______"],["smiling","正在微笑","s______"],["yawning","正在打哈欠","y______"],["happy","開心","h____"],["sad","難過","s__"]].map(x=>item("Unit 7 單字",...x));
+    const u7Plural=[["boy / boys","男孩／男孩們","boy -> boys"],["parent / parents","父母／家長們","parent -> parents"],["student / students","學生／學生們","student -> students"],["person / people","人／人們","person -> people"],["child / children","孩子／孩子們","child -> children"],["knife / knives","刀子／刀子們","knife -> knives"]].map(x=>item("Unit 7 複數",...x));
+    const u7Phonics=[["tired","i 發音","tired"],["night","i 發音","night"],["bike","i_e 發音","bike"],["surprised","i 發音","surprised"],["kite","i_e 發音","kite"],["rice","i_e 發音","rice"]].map(x=>item("Unit 7 Phonics i",...x));
+    const u8Vocab=[["a penguin","企鵝","a p______"],["a giraffe","長頸鹿","a g______"],["a hippo","河馬","a h____"],["a tiger","老虎","a t____"],["a panda","熊貓","a p____"],["a lion","獅子","a l___"],["a zebra","斑馬","a z____"],["a kangaroo","袋鼠","a k_______"],["hop","跳","h__"],["swing","擺盪","s____"],["colorful feathers","彩色羽毛","c_______ f_______"],["sharp claws","尖銳爪子","s____ c____"],["a short tail","短尾巴","a s____ t___"],["a long trunk","長鼻子","a l___ t____"],["big teeth","大牙齒","b__ t____"],["an ostrich","鴕鳥","an o______"]].map(x=>item("Unit 8 單字",...x));
+    const u8Phonics=[["zebra","e 發音","zebra"],["teeth","ee 發音","teeth"],["jeans","ea 發音","jeans"],["sheep","ee 發音","sheep"],["tree","ee 發音","tree"],["tea","ea 發音","tea"]].map(x=>item("Unit 8 Phonics e",...x));
+    function item(unit,word,zh,clue){const alts=[word];if(word.startsWith("a "))alts.push(word.slice(2));if(word.startsWith("an "))alts.push(word.slice(3));return{unit,word,zh,clue,alts};}
+    const allWords=[...u7Vocab,...u7Plural,...u7Phonics,...u8Vocab,...u8Phonics];
+
+    function q(unit,prompt,choices,answer,explain){return{unit,prompt,choices,answer,explain};}
+    const choiceQuestions=[
+      q("Unit 7 選擇","The children ____ playing basketball in the park.",["is","are","isn't"],"are","children 是複數，要用 are。"),
+      q("Unit 7 選擇","A: How are you and your grandmother? B: ____",["I'm great.","We're great.","They're great."],"We're great.","you and your grandmother 回答時是 we。"),
+      q("Unit 7 選擇","Your sisters ____ worried.",["look","looks","is looking"],"look","sisters 是複數，所以用 look。"),
+      q("Unit 7 選擇","There are four ____ in the living room.",["friend","person","people"],"people","four 後面要用複數，person 的複數是 people。"),
+      q("Unit 7 選擇","My dog has four ____.",["foot","feet","tooth"],"feet","foot 的複數是 feet。"),
+      q("Unit 7 選擇","A: How are you? B: ____",["He's fine.","You're fine.","I'm fine."],"I'm fine.","問 you，回答 I。"),
+      q("Unit 7 文法","How ____ the girl look?",["do","does","are"],"does","the girl 是單數，用 does。"),
+      q("Unit 7 文法","The two girls ____ scared.",["look","looks","is"],"look","two girls 是複數，用 look。"),
+      q("Unit 7 文法","He ____ bored.",["look","looks","are"],"looks","he 是單數，用 looks。"),
+      q("Unit 7 文法","What ____ you doing?",["is","are","do"],"are","What are you doing?"),
+      q("Unit 7 文法","Is he smiling? No, ____ not.",["he is","he are","they are"],"he is","Is he...? No, he is not."),
+      q("Unit 7 複數","one child, two ____",["childs","children","childes"],"children","child 的複數是 children。"),
+      q("Unit 7 複數","one knife, two ____",["knifes","knives","knifees"],"knives","knife 的複數是 knives。"),
+      q("Unit 7 複數","one student, two ____",["students","studentes","student"],"students","一般規則複數加 s。"),
+      q("Unit 8 圈選","A: ____ elephants have big ears? B: Yes, they do.",["Do","Does","Can"],"Do","elephants 是複數，用 Do。"),
+      q("Unit 8 圈選","A: Can a penguin fly? B: No, it ____.",["can","can't","does"],"can't","Can 問句的否定回答是 can't。"),
+      q("Unit 8 圈選","A parrot ____ colorful feathers.",["have","has","can"],"has","A parrot 是單數，用 has。"),
+      q("Unit 8 圈選","Can a turtle ____?",["swimming","swim","swims"],"swim","can 後面接原形動詞。"),
+      q("Unit 8 圈選","Do ____ have necks?",["a penguin","penguins","a panda"],"penguins","Do 後面要接複數主詞。"),
+      q("Unit 8 圈選","A kangaroo can ____ with its strong feet.",["hop","hopping","hops"],"hop","can 後面接原形動詞。"),
+      q("Unit 8 圈選","A: ____ monkeys swing in trees? B: Yes, they can.",["Can","Do","Does"],"Can","問能力用 Can。"),
+      q("Unit 8 文法","____ a tiger have sharp claws?",["Do","Does","Can"],"Does","a tiger 是單數，問有沒有用 Does。"),
+      q("Unit 8 文法","Does a tiger have a long trunk? No, it ____.",["does","doesn't","don't"],"doesn't","Does 問句，否定回答 No, it doesn't。"),
+      q("Unit 8 文法","Do tigers have sharp claws? Yes, ____.",["it does","they do","they can"],"they do","Do 複數問句，回答 they do。"),
+      q("Unit 8 文法","Do tigers have long trunks? No, ____.",["they don't","it doesn't","they can't"],"they don't","Do 複數問句，否定回答 they don't。"),
+      q("Unit 8 文法","A panda ____ a short tail.",["have","has","can"],"has","A panda 是單數，用 has。"),
+      q("Unit 8 文法","Pandas ____ short tails.",["have","has","does"],"have","Pandas 是複數，用 have。"),
+      q("Unit 8 文法","Can an ostrich run? Yes, ____.",["it can","it does","they do"],"it can","Can 問句回答 it can。")
+    ];
+
+    function f(unit,prompt,answer,full,explain,alts=[]){return{unit,prompt,answer,full,explain,alts:[answer,...alts]};}
+    const fillQuestions=[
+      f("Unit 7 填空","Is he smiling? No, ____ not. He is yawning.","he is","Is he smiling? No, he is not. He is yawning.","問 he，回答 he is not。"),
+      f("Unit 7 填空","What ____ you doing? I'm laughing.","are","What are you doing? I'm laughing.","What are you doing? 是考卷題型。"),
+      f("Unit 7 填空","How do they look? The two girls ____ scared.","look","How do they look? The two girls look scared.","two girls 是複數，用 look。"),
+      f("Unit 7 填空","How does the boy look? He ____ bored.","looks","How does the boy look? He looks bored.","he 是單數，用 looks。"),
+      f("Unit 7 填空","How are you? ____ hungry.","I'm","How are you? I'm hungry.","問 you，回答 I'm。"),
+      f("Unit 7 填空","She ____ surprised.","looks","She looks surprised.","she 是單數，用 looks。"),
+      f("Unit 7 填空","The children ____ happy.","look","The children look happy.","children 是複數。"),
+      f("Unit 7 否定縮寫","He ____ smiling.","isn't","He isn't smiling.","isn't = is not，主詞是 He。",["isnt"]),
+      f("Unit 7 否定縮寫","She ____ laughing.","isn't","She isn't laughing.","isn't = is not，主詞是 She。",["isnt"]),
+      f("Unit 7 否定縮寫","The students ____ bored.","aren't","The students aren't bored.","aren't = are not，students 是複數。",["arent"]),
+      f("Unit 7 否定縮寫","The children ____ tired.","aren't","The children aren't tired.","aren't = are not，children 是複數。",["arent"]),
+      f("Unit 7 否定縮寫","My parents ____ angry.","aren't","My parents aren't angry.","aren't = are not，parents 是複數。",["arent"]),
+      f("Unit 7 填空","one person, four ____","people","one person, four people","person 的複數是 people。"),
+      f("Unit 7 填空","one boy, two ____","boys","one boy, two boys","boy 的複數加 s。"),
+      f("Unit 7 填空","one parent, two ____","parents","one parent, two parents","parent 的複數加 s。"),
+      f("Unit 7 填空","one knife, two ____","knives","one knife, two knives","knife 變 knives。"),
+      f("Unit 8 填空","____ a hippo have a big mouth? Yes, it does.","Does","Does a hippo have a big mouth? Yes, it does.","a hippo 是單數，用 Does。"),
+      f("Unit 8 填空","A parrot has ____ feathers.","colorful","A parrot has colorful feathers.","完整單字是 colorful feathers。"),
+      f("Unit 8 填空","Can a tiger fly? No, it ____.","can't","Can a tiger fly? No, it can't.","Can 的否定回答。",["cant"]),
+      f("Unit 8 填空","Can a lion run? Yes, it ____.","can","Can a lion run? Yes, it can.","Can 的肯定回答。"),
+      f("Unit 8 填空","Can a penguin swim? Yes, it ____.","can","Can a penguin swim? Yes, it can.","單數動物用 it。"),
+      f("Unit 8 填空","A penguin ____ swim.","can","A penguin can swim.","can 後面接原形動詞。"),
+      f("Unit 8 填空","Does a tiger have sharp claws? Yes, it ____.","does","Does a tiger have sharp claws? Yes, it does.","Does 問句肯定回答。"),
+      f("Unit 8 填空","A tiger ____ sharp claws.","has","A tiger has sharp claws.","單數主詞用 has。"),
+      f("Unit 8 填空","Do tigers have long trunks? No, they ____.","don't","Do tigers have long trunks? No, they don't.","Do 複數問句否定回答。",["dont"]),
+      f("Unit 8 否定縮寫","Tigers ____ have long trunks.","don't","Tigers don't have long trunks.","don't = do not，Tigers 是複數。",["dont"]),
+      f("Unit 8 否定縮寫","Pandas ____ have long trunks.","don't","Pandas don't have long trunks.","don't = do not，Pandas 是複數。",["dont"]),
+      f("Unit 8 否定縮寫","A giraffe ____ have a short tail.","doesn't","A giraffe doesn't have a short tail.","doesn't = does not，a giraffe 是單數。",["doesnt"]),
+      f("Unit 8 否定縮寫","A hippo ____ have colorful feathers.","doesn't","A hippo doesn't have colorful feathers.","doesn't = does not，a hippo 是單數。",["doesnt"]),
+      f("Unit 8 填空","Giraffes have long ____.","necks","Giraffes have long necks.","複數長頸鹿有 long necks。"),
+      f("Unit 8 填空","Elephants have long ____.","trunks","Elephants have long trunks.","trunk 複數加 s。"),
+      f("Unit 8 填空","Pandas have short ____.","tails","Pandas have short tails.","tail 複數加 s。")
+    ];
+
+    function b(unit,prompt,sentence){return{unit,prompt,sentence,words:sentence.match(/[A-Za-z']+|[?.!,]/g)};}
+    const builderQuestions=[
+      b("Unit 7 重組","請排出：他看起來很無聊。","He looks bored."),
+      b("Unit 7 重組","請排出：她看起來很驚訝。","She looks surprised."),
+      b("Unit 7 重組","請排出：你還好嗎？我很害怕。","How are you? I'm scared."),
+      b("Unit 7 重組","請排出：你正在做什麼？我正在笑。","What are you doing? I'm laughing."),
+      b("Unit 7 重組","請排出：那些孩子看起來很開心。","The children look happy."),
+      b("Unit 7 重組","請排出：他正在微笑嗎？不，他沒有。","Is he smiling? No, he is not."),
+      b("Unit 8 重組","請排出：企鵝會游泳嗎？會。","Can a penguin swim? Yes, it can."),
+      b("Unit 8 重組","請排出：企鵝會飛嗎？不會。","Can a penguin fly? No, it can't."),
+      b("Unit 8 重組","請排出：企鵝不會飛。","A penguin can't fly."),
+      b("Unit 8 重組","請排出：老虎有尖銳爪子嗎？有。","Does a tiger have sharp claws? Yes, it does."),
+      b("Unit 8 重組","請排出：老虎有長鼻子嗎？沒有。","Does a tiger have a long trunk? No, it doesn't."),
+      b("Unit 8 重組","請排出：老虎們有尖銳爪子嗎？有。","Do tigers have sharp claws? Yes, they do."),
+      b("Unit 8 重組","請排出：熊貓有短尾巴。","A panda has a short tail."),
+      b("Unit 8 重組","請排出：袋鼠會跳。","A kangaroo can hop.")
+    ];
+
+    let vocabIndex=0,vocabScore=0,vocabDone=false,listenIndex=0,listenScore=0,listenAnswered=false,choiceIndex=0,choiceScore=0,choiceAnswered=false,fillIndex=0,fillScore=0,fillDone=false,builderIndex=0,builderScore=0,builderDone=false,builderTiles=[];
+    const vocabOrder=allWords,listenOrder=allWords,choiceOrder=choiceQuestions,fillOrder=fillQuestions,builderOrder=builderQuestions;
+    function showTab(id,btn){document.querySelectorAll(".section").forEach(s=>s.classList.remove("active"));document.getElementById(id).classList.add("active");document.querySelectorAll("nav button").forEach(b=>b.classList.remove("active"));if(btn)btn.classList.add("active");}
+    function showTabById(id){const buttons=[...document.querySelectorAll("nav button")];const map={home:0,words:1,vocabQuiz:2,listenQuiz:3,choiceQuiz:4,fillQuiz:5,builderQuiz:6};showTab(id,buttons[map[id]]);}
+    function norm(s){return String(s||"").trim().toLowerCase().replace(/[’]/g,"'").replace(/\s+/g," ");}
+    function shuffle(arr){return[...arr].sort(()=>Math.random()-0.5);}
+    function setFeedback(id,type,text){const el=document.getElementById(id);el.className="feedback "+type;el.textContent=text;}
+    function rate(){const r=document.getElementById("rateSelect");return r?Number(r.value):0.62;}
+    function speakText(text){if(!window.speechSynthesis)return;window.speechSynthesis.cancel();const u=new SpeechSynthesisUtterance(text);u.lang="en-US";u.rate=rate();u.pitch=1;window.speechSynthesis.speak(u);}
+    function progress(idBar,index,total){document.getElementById(idBar).style.width=Math.round((index/total)*100)+"%";}
+    function escapeAttr(s){return String(s).replace(/'/g,"\\'");}
+    function renderWordSections(){const groups=[["Unit 7 必背單字",u7Vocab],["Unit 7 複數",u7Plural],["Unit 7 Phonics i",u7Phonics],["Unit 8 必背單字",u8Vocab],["Unit 8 Phonics e",u8Phonics]];document.getElementById("wordSections").innerHTML=groups.map(([title,items])=>`<div class="panel"><h2>${title}</h2><div class="word-list">${items.map(w=>`<div class="word"><div><strong>${w.word}</strong><span>${w.zh}</span></div><button class="speak" onclick="speakText('${escapeAttr(w.word)}')">聽</button></div>`).join("")}</div></div>`).join("");}
+
+    function renderVocab(){const item=vocabOrder[vocabIndex];vocabDone=false;document.getElementById("vocabProgress").textContent=`進度 ${vocabIndex+1} / ${vocabOrder.length}`;document.getElementById("vocabScore").textContent=`得分 ${vocabScore} / ${vocabOrder.length}`;progress("vocabBar",vocabIndex,vocabOrder.length);document.getElementById("vocabUnit").textContent=item.unit;document.getElementById("vocabPrompt").textContent=item.zh;document.getElementById("vocabHint").innerHTML=`提示：<span class="kbd">${item.clue}</span>`;document.getElementById("vocabInput").value="";setFeedback("vocabFeedback","neutral","輸入英文後按檢查。");}
+    function checkVocab(){if(vocabDone)return;const item=vocabOrder[vocabIndex];const val=norm(document.getElementById("vocabInput").value);const ok=item.alts.some(a=>norm(a)===val);if(ok){vocabDone=true;vocabScore++;document.getElementById("vocabScore").textContent=`得分 ${vocabScore} / ${vocabOrder.length}`;setFeedback("vocabFeedback","good",`答對：${item.word}`);speakText(item.word);}else setFeedback("vocabFeedback","bad",`再想想。正確答案：${item.word}`);}
+    function nextVocab(){if(vocabIndex<vocabOrder.length-1){vocabIndex++;renderVocab();}else{progress("vocabBar",vocabOrder.length,vocabOrder.length);setFeedback("vocabFeedback","neutral",`完成，總分 ${vocabScore} / ${vocabOrder.length}。`);}}
+    function resetVocab(){vocabIndex=0;vocabScore=0;renderVocab();}
+    function speakCurrentVocab(){speakText(vocabOrder[vocabIndex].word);}
+
+    function renderListen(){listenAnswered=false;const item=listenOrder[listenIndex];document.getElementById("listenProgress").textContent=`進度 ${listenIndex+1} / ${listenOrder.length}`;document.getElementById("listenScore").textContent=`得分 ${listenScore} / ${listenOrder.length}`;progress("listenBar",listenIndex,listenOrder.length);const pool=shuffle(allWords.filter(w=>w.word!==item.word)).slice(0,3);const options=shuffle([item,...pool]);document.getElementById("listenChoices").innerHTML=options.map(o=>`<button class="choice" onclick="answerListen(this,'${escapeAttr(o.word)}')">${o.word}<br><span class="mini">${o.zh}</span></button>`).join("");setFeedback("listenFeedback","neutral","按播放，聽完再選。");}
+    function playListen(){speakText(listenOrder[listenIndex].word);}
+    function answerListen(btn,word){if(listenAnswered)return;listenAnswered=true;const correct=listenOrder[listenIndex].word;[...document.querySelectorAll("#listenChoices .choice")].forEach(b=>{if(b.textContent.includes(correct))b.classList.add("correct");});if(word===correct){listenScore++;btn.classList.add("correct");setFeedback("listenFeedback","good",`答對：${correct}`);}else{btn.classList.add("wrong");setFeedback("listenFeedback","bad",`答錯。正確答案：${correct}`);}document.getElementById("listenScore").textContent=`得分 ${listenScore} / ${listenOrder.length}`;setTimeout(()=>{if(listenIndex<listenOrder.length-1){listenIndex++;renderListen();}else{progress("listenBar",listenOrder.length,listenOrder.length);setFeedback("listenFeedback","neutral",`完成，總分 ${listenScore} / ${listenOrder.length}。`);}},1100);}
+    function resetListen(){listenIndex=0;listenScore=0;renderListen();}
+
+    function renderChoice(){choiceAnswered=false;const item=choiceOrder[choiceIndex];document.getElementById("choiceProgress").textContent=`進度 ${choiceIndex+1} / ${choiceOrder.length}`;document.getElementById("choiceScore").textContent=`得分 ${choiceScore} / ${choiceOrder.length}`;progress("choiceBar",choiceIndex,choiceOrder.length);document.getElementById("choiceUnit").textContent=item.unit;document.getElementById("choicePrompt").textContent=item.prompt;document.getElementById("choiceChoices").innerHTML=shuffle(item.choices).map(c=>`<button class="choice" onclick="answerChoice(this,'${escapeAttr(c)}')">${c}</button>`).join("");const hint=document.getElementById("choiceHint");hint.textContent="";hint.classList.add("hidden");setFeedback("choiceFeedback","neutral","選出正確答案。需要時可以按提示。");}
+    function answerChoice(btn,ans){if(choiceAnswered)return;choiceAnswered=true;const item=choiceOrder[choiceIndex];[...document.querySelectorAll("#choiceChoices .choice")].forEach(b=>{if(b.textContent===item.answer)b.classList.add("correct");});if(ans===item.answer){choiceScore++;btn.classList.add("correct");setFeedback("choiceFeedback","good",`答對。${item.explain}`);}else{btn.classList.add("wrong");setFeedback("choiceFeedback","bad",`答錯。正確答案：${item.answer}。${item.explain}`);}document.getElementById("choiceScore").textContent=`得分 ${choiceScore} / ${choiceOrder.length}`;setTimeout(()=>{if(choiceIndex<choiceOrder.length-1){choiceIndex++;renderChoice();}else{progress("choiceBar",choiceOrder.length,choiceOrder.length);setFeedback("choiceFeedback","neutral",`完成，總分 ${choiceScore} / ${choiceOrder.length}。`);}},1500);}
+    function resetChoice(){choiceIndex=0;choiceScore=0;renderChoice();}
+    function showChoiceHint(){const item=choiceOrder[choiceIndex];const hint=document.getElementById("choiceHint");hint.textContent=item.explain;hint.classList.remove("hidden");}
+    function speakCurrentChoice(){speakText(choiceOrder[choiceIndex].prompt.replace(/____/g,"blank"));}
+
+    function renderFill(){fillDone=false;const item=fillOrder[fillIndex];document.getElementById("fillProgress").textContent=`進度 ${fillIndex+1} / ${fillOrder.length}`;document.getElementById("fillScore").textContent=`得分 ${fillScore} / ${fillOrder.length}`;progress("fillBar",fillIndex,fillOrder.length);document.getElementById("fillUnit").textContent=item.unit;document.getElementById("fillPrompt").textContent=item.prompt;const hint=document.getElementById("fillHint");hint.textContent="";hint.classList.add("hidden");document.getElementById("fillInput").value="";setFeedback("fillFeedback","neutral","請輸入空格的英文。需要時可以按提示。");}
+    function checkFill(){if(fillDone)return;const item=fillOrder[fillIndex];const val=norm(document.getElementById("fillInput").value);const ok=item.alts.some(a=>norm(a)===val);if(ok){fillDone=true;fillScore++;document.getElementById("fillScore").textContent=`得分 ${fillScore} / ${fillOrder.length}`;setFeedback("fillFeedback","good",`答對：${item.full}`);speakText(item.full);}else setFeedback("fillFeedback","bad",`再想想。正確答案：${item.answer}。完整句：${item.full}`);}
+    function nextFill(){if(fillIndex<fillOrder.length-1){fillIndex++;renderFill();}else{progress("fillBar",fillOrder.length,fillOrder.length);setFeedback("fillFeedback","neutral",`完成，總分 ${fillScore} / ${fillOrder.length}。`);}}
+    function resetFill(){fillIndex=0;fillScore=0;renderFill();}
+    function showFillHint(){const item=fillOrder[fillIndex];const hint=document.getElementById("fillHint");hint.textContent=item.explain;hint.classList.remove("hidden");}
+    function speakCurrentFill(){speakText(fillOrder[fillIndex].full);}
+
+    function renderBuilder(){builderDone=false;const item=builderOrder[builderIndex];builderTiles=shuffle(item.words.map((w,i)=>({w,id:i+"-"+Math.random()})));document.getElementById("builderProgress").textContent=`進度 ${builderIndex+1} / ${builderOrder.length}`;document.getElementById("builderScore").textContent=`得分 ${builderScore} / ${builderOrder.length}`;progress("builderBar",builderIndex,builderOrder.length);document.getElementById("builderUnit").textContent=item.unit;document.getElementById("builderPrompt").textContent=item.prompt;document.getElementById("answerRow").innerHTML="";renderBank();setFeedback("builderFeedback","neutral","點字卡排句子。");}
+    function renderBank(){document.getElementById("wordBank").innerHTML=builderTiles.map(t=>`<button class="tile" onclick="moveTile('${t.id}')">${t.w}</button>`).join("");}
+    function moveTile(id){if(builderDone)return;const idx=builderTiles.findIndex(t=>t.id===id);if(idx<0)return;const tile=builderTiles.splice(idx,1)[0];const btn=document.createElement("button");btn.className="tile answer";btn.textContent=tile.w;btn.onclick=()=>{if(builderDone)return;builderTiles.push(tile);btn.remove();renderBank();};document.getElementById("answerRow").appendChild(btn);renderBank();}
+    function joined(words){return words.join(" ").replace(/\s+([?.!,])/g,"$1");}
+    function checkBuilder(){if(builderDone)return;const item=builderOrder[builderIndex];const ans=[...document.querySelectorAll("#answerRow .tile")].map(b=>b.textContent);const user=joined(ans);if(user===item.sentence){builderDone=true;builderScore++;document.getElementById("builderScore").textContent=`得分 ${builderScore} / ${builderOrder.length}`;setFeedback("builderFeedback","good",`答對：${item.sentence}`);speakText(item.sentence);}else setFeedback("builderFeedback","bad",`還不對。正確句子：${item.sentence}`);}
+    function clearBuilder(){renderBuilder();}
+    function nextBuilder(){if(builderIndex<builderOrder.length-1){builderIndex++;renderBuilder();}else{progress("builderBar",builderOrder.length,builderOrder.length);setFeedback("builderFeedback","neutral",`完成，總分 ${builderScore} / ${builderOrder.length}。`);}}
+    function resetBuilder(){builderIndex=0;builderScore=0;renderBuilder();}
+    function speakCurrentBuilder(){speakText(builderOrder[builderIndex].sentence);}
+
+    renderWordSections();renderVocab();renderListen();renderChoice();renderFill();renderBuilder();
+  </script>
+</body>
+</html>
